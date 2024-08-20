@@ -23,7 +23,6 @@ tbl_uvregression(
 							eyesight_cat, income, age_bir),
 	method = lm)
 
-
 tbl_uvregression(
 	nlsy,
 	y = glasses,
