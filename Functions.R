@@ -75,7 +75,7 @@ logbinomial_model <- glm(glasses ~ eyesight_cat + sex_cat,
 												 data = nlsy, family = binomial(link = "log")
 )
 
-new_table_function <- function(model, tidy_fun = NULL) {
+new_table_function <- function(model, tidy_fun = broom.helpers::tidy_with_broom_or_parameters) {
 	tbl_regression(
 		model,
 		exponentiate = TRUE,
@@ -89,4 +89,4 @@ new_table_function <- function(model, tidy_fun = NULL) {
 
 new_table_function(logistic_model)
 new_table_function(poisson_model)
-new_table_function(logbinomial_model, tidy_fun = partial)
+new_table_function(logbinomial_model, tidy_fun = partial(tidy_robust, vcov = "HC1"))
