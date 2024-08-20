@@ -50,11 +50,59 @@ tbl_summary(
   missing_text = "Missing")
 ```
 
-**TABLE THREE**
 ```{r}
-tbl_summary(
+#| label: tbl-one
+#| tbl-cap: Descriptive Stats
+table_one <- tbl_summary(
   nlsy,
   by = sex_cat,
   include = c(sex_cat, race_eth_cat, region_cat,
               eyesight_cat, glasses, age_bir))
 ```
+We can see descriptive statistics in @tbl-one
+
+```{r}
+stats <- list(n = nrow(nlsy),
+             mean_hours = mean(nlsy$sleep_wknd, na.rm = TRUE))
+
+```
+
+There were `r stats$n` participants and on average, `r stats$mean_hours` hours of sleep on weekends.
+
+The mean number of hours was `r mean(stats$mean_hours)`
+
+```{r}
+#| label: tbl-descr
+#| tbl-cap: "Descriptive statistics"
+#| output-location: slide
+table1 <- tbl_summary(
+  nlsy,
+  by = sex_cat,
+  include = c(sex_cat, race_eth_cat, region_cat,
+              eyesight_cat, glasses, age_bir)) |> 
+  add_overall(last = TRUE)
+table1
+
+inline_text(table1, variable = "age_bir", column = "stat_1")
+
+inline_text(table1, variable = "glasses", column = "stat_0",
+            pattern = "{n}/{N} ({p}%)")
+```
+A greater proportion of female (`r inline_text(table1, variable = "glasses", column = "stat_2")`) than male 
+
+(`r inline_text(table1, variable = "glasses", column = "stat_1")`) participants wore glasses.
+
+```{r}
+#| label: tbl-descr2
+#| tbl-cap: "Descriptive statistics"
+table2 <- tbl_summary(
+  nlsy,
+  by = sex_cat,
+  include = c(sex_cat, race_eth_cat, region_cat,
+              eyesight_cat, glasses, age_bir, sleep_wknd)) |> 
+  add_overall(last = TRUE)
+table2
+
+median_hours <- inline_text(table2, variable = "sleep_wknd", column = "stat_0")
+```
+The median and IQR of hours of sleep on the weekends is `r median_hours`
